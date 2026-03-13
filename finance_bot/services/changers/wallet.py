@@ -13,7 +13,9 @@ class WalletServiceChanger:
         self._wallet_repo = wallet_repo
 
     async def save(self, telegram_user_id: int, parameters: list[str]) -> str:
-        account_id: int = await self._account_repo.get_id(telegram_user_id=telegram_user_id)
+        account_id: int = await self._account_repo.get_id(
+            telegram_user_id=telegram_user_id
+        )
 
         if len(parameters) == 0:
             logger.warning(
@@ -30,7 +32,9 @@ class WalletServiceChanger:
             amount = parameters[1]
 
         current_datetime: str = (
-            datetime.now(tz=UTC).replace(microsecond=0).strftime(settings.UTC0_DATETIME_FORMAT)
+            datetime.now(tz=UTC)
+            .replace(microsecond=0)
+            .strftime(settings.UTC0_DATETIME_FORMAT)
         )
 
         item: WalletDB = WalletDB(
@@ -45,7 +49,9 @@ class WalletServiceChanger:
         return f"Кошелёк/карта `{name}` была добавлена."
 
     async def delete(self, telegram_user_id: int, parameters: list[str]) -> str:
-        account_id: int = await self._account_repo.get_id(telegram_user_id=telegram_user_id)
+        account_id: int = await self._account_repo.get_id(
+            telegram_user_id=telegram_user_id
+        )
 
         if len(parameters) != 1:
             logger.warning(

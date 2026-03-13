@@ -13,5 +13,7 @@ class AccountServiceSelector:
             telegram_user_id=telegram_user_id
         )
 
-        logger.debug(f"[#{account.id}] Your account was created on `{account.created_at}`.")
+        logger.debug(
+            f"[#{account.id}] Your account was created on `{account.created_at}`."
+        )
         return f"Ваш аккаунт был создан <code>{account.created_at}</code>"

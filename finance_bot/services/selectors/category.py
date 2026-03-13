@@ -15,9 +15,13 @@ class CategoryServiceSelector:
     async def get_categories_by_telegram_user_id(self, telegram_user_id: int) -> str:
         response: str = "📚 <b>КАТЕГОРИИ</b>:\n"
 
-        account_id: int = await self._account_repo.get_id(telegram_user_id=telegram_user_id)
+        account_id: int = await self._account_repo.get_id(
+            telegram_user_id=telegram_user_id
+        )
 
-        items: list[CategoryDB] = await self._category_repo.get_by_account_id(account_id=account_id)
+        items: list[CategoryDB] = await self._category_repo.get_by_account_id(
+            account_id=account_id
+        )
         if not items:
             logger.debug(f"[#{account_id}] No categories were found.")
             return f"{response}┗\t Не найдено."

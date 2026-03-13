@@ -4,7 +4,12 @@ from loguru import logger
 
 from finance_bot.config import settings
 from finance_bot.entities.db import WalletDB, TransactionDB
-from finance_bot.infra.repos import AccountRepo, CategoryRepo, WalletRepo, TransactionRepo
+from finance_bot.infra.repos import (
+    AccountRepo,
+    CategoryRepo,
+    WalletRepo,
+    TransactionRepo,
+)
 
 
 class TransactionServiceChanger:
@@ -21,7 +26,9 @@ class TransactionServiceChanger:
         self._wallet_repo = wallet_repo
 
     async def save(self, telegram_user_id: int, parameters: list[str]) -> str:
-        account_id: int = await self._account_repo.get_id(telegram_user_id=telegram_user_id)
+        account_id: int = await self._account_repo.get_id(
+            telegram_user_id=telegram_user_id
+        )
 
         if len(parameters) < 3:
             logger.warning(
@@ -42,14 +49,18 @@ class TransactionServiceChanger:
 
         amount = float(amount)
         current_datetime: str = (
-            datetime.now(tz=UTC).replace(microsecond=0).strftime(settings.UTC0_DATETIME_FORMAT)
+            datetime.now(tz=UTC)
+            .replace(microsecond=0)
+            .strftime(settings.UTC0_DATETIME_FORMAT)
         )
 
         is_category: bool = await self._category_repo.is_exists(
             name=category_name, account_id=account_id
         )
         if not is_category:
-            logger.debug(f"[#{account_id}] The category `{category_name}` does not exist.")
+            logger.debug(
+                f"[#{account_id}] The category `{category_name}` does not exist."
+            )
             return f"Категория `{category_name}` не существует."
 
         is_wallet: bool = await self._wallet_repo.is_exists(
@@ -59,7 +70,9 @@ class TransactionServiceChanger:
             logger.debug(f"[#{account_id}] The wallet `{wallet_name}` does not exist.")
             return f"Кошелёк/карта `{wallet_name}` не существует."
 
-        wallet: WalletDB = await self._wallet_repo.get_by_name(name=wallet_name, account_id=account_id)
+        wallet: WalletDB = await self._wallet_repo.get_by_name(
+            name=wallet_name, account_id=account_id
+        )
 
         item: TransactionDB = TransactionDB(
             account_id=account_id,
@@ -75,7 +88,7 @@ class TransactionServiceChanger:
             item=WalletDB(
                 name=wallet_name,
                 account_id=account_id,
-                amount=wallet.amount+amount,
+                amount=wallet.amount + amount,
             ),
         )
 

@@ -13,7 +13,9 @@ class AccountServiceChanger:
 
     async def save(self, telegram_user_id: int, telegram_user_name: str) -> None:
         current_datetime: str = (
-            datetime.now(tz=UTC).replace(microsecond=0).strftime(settings.UTC0_DATETIME_FORMAT)
+            datetime.now(tz=UTC)
+            .replace(microsecond=0)
+            .strftime(settings.UTC0_DATETIME_FORMAT)
         )
 
         item: AccountDB = AccountDB(
@@ -23,6 +25,8 @@ class AccountServiceChanger:
         )
         await self._account_repo.insert(item=item)
 
-        account_id: int = await self._account_repo.get_id(telegram_user_id=telegram_user_id)
+        account_id: int = await self._account_repo.get_id(
+            telegram_user_id=telegram_user_id
+        )
 
         logger.debug(f"[#{account_id}] Registration/initialization of the user.")

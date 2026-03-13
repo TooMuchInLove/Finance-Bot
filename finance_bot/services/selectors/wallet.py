@@ -18,9 +18,13 @@ class WalletServiceSelector:
             "💳 <b>КОШЕЛЬКИ/КАРТЫ</b>:\n"
         )
 
-        account_id: int = await self._account_repo.get_id(telegram_user_id=telegram_user_id)
+        account_id: int = await self._account_repo.get_id(
+            telegram_user_id=telegram_user_id
+        )
 
-        wallets: list[WalletDB] = await self._wallet_repo.get_by_account_id(account_id=account_id)
+        wallets: list[WalletDB] = await self._wallet_repo.get_by_account_id(
+            account_id=account_id
+        )
         if not wallets:
             logger.debug(f"[#{account_id}] No wallets were found.")
             return f"{response}┗\t Не найдено."
@@ -31,9 +35,7 @@ class WalletServiceSelector:
             else:
                 response += "┣\t"
             index_emoji: str = await get_index_emoji(index=index)
-            response += (
-                f"{index_emoji} [<code>{item.name}</code>] 💵<tg-spoiler>{item.amount} ₽</tg-spoiler>\n"
-            )
+            response += f"{index_emoji} [<code>{item.name}</code>] 💵<tg-spoiler>{item.amount} ₽</tg-spoiler>\n"
 
         logger.debug(f"[#{account_id}] The list of wallets has been received.")
         return response

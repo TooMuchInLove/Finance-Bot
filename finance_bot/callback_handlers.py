@@ -120,9 +120,7 @@ async def command_get_categories(
             telegram_user_id=telegram_user_id
         )
 
-        await send_telegram_message(
-            message=message, message_text=response
-        )
+        await send_telegram_message(message=message, message_text=response)
     except Exception as error:
         logger.exception(error)
 
@@ -138,9 +136,7 @@ async def command_info_wallet(
             telegram_user_id=telegram_user_id
         )
 
-        await send_telegram_message(
-            message=message, message_text=response
-        )
+        await send_telegram_message(message=message, message_text=response)
     except Exception as error:
         logger.exception(error)
 
@@ -157,9 +153,7 @@ async def command_add_wallet(
             telegram_user_id=telegram_user_id, parameters=parameters
         )
 
-        await send_telegram_message(
-            message=message, message_text=response
-        )
+        await send_telegram_message(message=message, message_text=response)
     except Exception as error:
         logger.exception(error)
 
@@ -176,9 +170,7 @@ async def command_delete_wallet(
             telegram_user_id=telegram_user_id, parameters=parameters
         )
 
-        await send_telegram_message(
-            message=message, message_text=response
-        )
+        await send_telegram_message(message=message, message_text=response)
     except Exception as error:
         logger.exception(error)
 
@@ -214,9 +206,7 @@ async def command_daily_all(
             telegram_user_id=telegram_user_id, parameters=parameters
         )
 
-        await send_telegram_message(
-            message=message, message_text=response
-        )
+        await send_telegram_message(message=message, message_text=response)
     except Exception as error:
         logger.exception(error)
 
@@ -233,9 +223,7 @@ async def command_daily_expense(
             telegram_user_id=telegram_user_id, parameters=parameters
         )
 
-        await send_telegram_message(
-            message=message, message_text=response
-        )
+        await send_telegram_message(message=message, message_text=response)
     except Exception as error:
         logger.exception(error)
 
@@ -252,9 +240,7 @@ async def command_daily_income(
             telegram_user_id=telegram_user_id, parameters=parameters
         )
 
-        await send_telegram_message(
-            message=message, message_text=response
-        )
+        await send_telegram_message(message=message, message_text=response)
     except Exception as error:
         logger.exception(error)
 
@@ -271,9 +257,7 @@ async def command_monthly_all(
             telegram_user_id=telegram_user_id, parameters=parameters
         )
 
-        await send_telegram_message(
-            message=message, message_text=response
-        )
+        await send_telegram_message(message=message, message_text=response)
     except Exception as error:
         logger.exception(error)
 
@@ -290,9 +274,7 @@ async def command_monthly_expense(
             telegram_user_id=telegram_user_id, parameters=parameters
         )
 
-        await send_telegram_message(
-            message=message, message_text=response
-        )
+        await send_telegram_message(message=message, message_text=response)
     except Exception as error:
         logger.exception(error)
 
@@ -309,8 +291,6 @@ async def command_monthly_income(
             telegram_user_id=telegram_user_id, parameters=parameters
         )
 
-        await send_telegram_message(
-            message=message, message_text=response
-        )
+        await send_telegram_message(message=message, message_text=response)
     except Exception as error:
         logger.exception(error)

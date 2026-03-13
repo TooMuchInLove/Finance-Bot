@@ -19,19 +19,27 @@ class TransactionServiceSelector:
         self._transaction_repo = transaction_repo
 
     async def get_daily_all(self, telegram_user_id: int, parameters: list[str]) -> str:
-        account_id: int = await self._account_repo.get_id(telegram_user_id=telegram_user_id)
+        account_id: int = await self._account_repo.get_id(
+            telegram_user_id=telegram_user_id
+        )
 
-        day: str = datetime.now(tz=UTC).replace(microsecond=0).strftime(settings.DAY_FORMAT)
+        day: str = (
+            datetime.now(tz=UTC).replace(microsecond=0).strftime(settings.DAY_FORMAT)
+        )
         if len(parameters) > 0:
             day = parameters[0]
 
         response: str = f"<b>Расходы и доходы за <code>{day}</code></b>:\n"
 
-        transactions: list[TransactionDB] = await self._transaction_repo.get_daily_by_account_id(
-            account_id=account_id, day=day, tag=AmountChoices.all
+        transactions: list[TransactionDB] = (
+            await self._transaction_repo.get_daily_by_account_id(
+                account_id=account_id, day=day, tag=AmountChoices.all
+            )
         )
         if not transactions:
-            logger.debug(f"[#{account_id}] Expenses and income for `{day}` were not found.")
+            logger.debug(
+                f"[#{account_id}] Expenses and income for `{day}` were not found."
+            )
             return f"{response}┗\t Не найдено."
 
         for index, item in enumerate(transactions, start=1):
@@ -48,17 +56,25 @@ class TransactionServiceSelector:
 
         return response
 
-    async def get_daily_expense(self, telegram_user_id: int, parameters: list[str]) -> str:
-        account_id: int = await self._account_repo.get_id(telegram_user_id=telegram_user_id)
+    async def get_daily_expense(
+        self, telegram_user_id: int, parameters: list[str]
+    ) -> str:
+        account_id: int = await self._account_repo.get_id(
+            telegram_user_id=telegram_user_id
+        )
 
-        day: str = datetime.now(tz=UTC).replace(microsecond=0).strftime(settings.DAY_FORMAT)
+        day: str = (
+            datetime.now(tz=UTC).replace(microsecond=0).strftime(settings.DAY_FORMAT)
+        )
         if len(parameters) > 0:
             day = parameters[0]
 
         response: str = f"<b>Расходы за <code>{day}</code></b>:\n"
 
-        transactions: list[TransactionDB] = await self._transaction_repo.get_daily_by_account_id(
-            account_id=account_id, day=day, tag=AmountChoices.expense
+        transactions: list[TransactionDB] = (
+            await self._transaction_repo.get_daily_by_account_id(
+                account_id=account_id, day=day, tag=AmountChoices.expense
+            )
         )
         if not transactions:
             logger.debug(f"[#{account_id}] Expenses for `{day}` were not found.")
@@ -78,17 +94,25 @@ class TransactionServiceSelector:
 
         return response
 
-    async def get_daily_income(self, telegram_user_id: int, parameters: list[str]) -> str:
-        account_id: int = await self._account_repo.get_id(telegram_user_id=telegram_user_id)
+    async def get_daily_income(
+        self, telegram_user_id: int, parameters: list[str]
+    ) -> str:
+        account_id: int = await self._account_repo.get_id(
+            telegram_user_id=telegram_user_id
+        )
 
-        day: str = datetime.now(tz=UTC).replace(microsecond=0).strftime(settings.DAY_FORMAT)
+        day: str = (
+            datetime.now(tz=UTC).replace(microsecond=0).strftime(settings.DAY_FORMAT)
+        )
         if len(parameters) > 0:
             day = parameters[0]
 
         response: str = f"<b>Доходы за <code>{day}</code></b>:\n"
 
-        transactions: list[TransactionDB] = await self._transaction_repo.get_daily_by_account_id(
-            account_id=account_id, day=day, tag=AmountChoices.income
+        transactions: list[TransactionDB] = (
+            await self._transaction_repo.get_daily_by_account_id(
+                account_id=account_id, day=day, tag=AmountChoices.income
+            )
         )
         if not transactions:
             logger.debug(f"[#{account_id}] Income for `{day}` were not found.")
@@ -108,20 +132,30 @@ class TransactionServiceSelector:
 
         return response
 
-    async def get_monthly_all(self, telegram_user_id: int, parameters: list[str]) -> str:
-        account_id: int = await self._account_repo.get_id(telegram_user_id=telegram_user_id)
+    async def get_monthly_all(
+        self, telegram_user_id: int, parameters: list[str]
+    ) -> str:
+        account_id: int = await self._account_repo.get_id(
+            telegram_user_id=telegram_user_id
+        )
 
-        month: str = datetime.now(tz=UTC).replace(microsecond=0).strftime(settings.MONTH_FORMAT)
+        month: str = (
+            datetime.now(tz=UTC).replace(microsecond=0).strftime(settings.MONTH_FORMAT)
+        )
         if len(parameters) > 0:
             month = parameters[0]
 
         response: str = f"<b>Расходы и доходы за <code>{month}</code></b>:\n"
 
-        transactions: list[TransactionDB] = await self._transaction_repo.get_monthly_by_account_id(
-            account_id=account_id, day=month, tag=AmountChoices.all
+        transactions: list[TransactionDB] = (
+            await self._transaction_repo.get_monthly_by_account_id(
+                account_id=account_id, day=month, tag=AmountChoices.all
+            )
         )
         if not transactions:
-            logger.debug(f"[#{account_id}] Expenses and income for `{month}` were not found.")
+            logger.debug(
+                f"[#{account_id}] Expenses and income for `{month}` were not found."
+            )
             return f"{response}┗\t Не найдено."
 
         for index, item in enumerate(transactions, start=1):
@@ -138,17 +172,25 @@ class TransactionServiceSelector:
 
         return response
 
-    async def get_monthly_expense(self, telegram_user_id: int, parameters: list[str]) -> str:
-        account_id: int = await self._account_repo.get_id(telegram_user_id=telegram_user_id)
+    async def get_monthly_expense(
+        self, telegram_user_id: int, parameters: list[str]
+    ) -> str:
+        account_id: int = await self._account_repo.get_id(
+            telegram_user_id=telegram_user_id
+        )
 
-        day: str = datetime.now(tz=UTC).replace(microsecond=0).strftime(settings.MONTH_FORMAT)
+        day: str = (
+            datetime.now(tz=UTC).replace(microsecond=0).strftime(settings.MONTH_FORMAT)
+        )
         if len(parameters) > 0:
             day = parameters[0]
 
         response: str = f"<b>Расходы за <code>{day}</code></b>:\n"
 
-        transactions: list[TransactionDB] = await self._transaction_repo.get_monthly_by_account_id(
-            account_id=account_id, day=day, tag=AmountChoices.expense
+        transactions: list[TransactionDB] = (
+            await self._transaction_repo.get_monthly_by_account_id(
+                account_id=account_id, day=day, tag=AmountChoices.expense
+            )
         )
         if not transactions:
             logger.debug(f"[#{account_id}] Expenses for `{day}` were not found.")
@@ -168,17 +210,25 @@ class TransactionServiceSelector:
 
         return response
 
-    async def get_monthly_income(self, telegram_user_id: int, parameters: list[str]) -> str:
-        account_id: int = await self._account_repo.get_id(telegram_user_id=telegram_user_id)
+    async def get_monthly_income(
+        self, telegram_user_id: int, parameters: list[str]
+    ) -> str:
+        account_id: int = await self._account_repo.get_id(
+            telegram_user_id=telegram_user_id
+        )
 
-        day: str = datetime.now(tz=UTC).replace(microsecond=0).strftime(settings.MONTH_FORMAT)
+        day: str = (
+            datetime.now(tz=UTC).replace(microsecond=0).strftime(settings.MONTH_FORMAT)
+        )
         if len(parameters) > 0:
             day = parameters[0]
 
         response: str = f"<b>Доходы за <code>{day}</code></b>:\n"
 
-        transactions: list[TransactionDB] = await self._transaction_repo.get_monthly_by_account_id(
-            account_id=account_id, day=day, tag=AmountChoices.income
+        transactions: list[TransactionDB] = (
+            await self._transaction_repo.get_monthly_by_account_id(
+                account_id=account_id, day=day, tag=AmountChoices.income
+            )
         )
         if not transactions:
             logger.debug(f"[#{account_id}] Income for `{day}` were not found.")

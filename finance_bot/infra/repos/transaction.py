@@ -27,7 +27,9 @@ class TransactionRepo:
             )
             await connection.commit()
 
-    async def get_daily_by_account_id(self, account_id: int, day: str, tag: AmountChoices) -> list[TransactionDB]:
+    async def get_daily_by_account_id(
+        self, account_id: int, day: str, tag: AmountChoices
+    ) -> list[TransactionDB]:
         query = (
             "SELECT id, account_id, category_name, wallet_name, amount, created_at, description "
             "FROM transactions "
@@ -45,7 +47,15 @@ class TransactionRepo:
                 rows = await cursor.fetchall()
 
                 for index, row in enumerate(rows):
-                    id_, account_id, category_name, wallet_name, amount, created_at, description = row
+                    (
+                        id_,
+                        account_id,
+                        category_name,
+                        wallet_name,
+                        amount,
+                        created_at,
+                        description,
+                    ) = row
                     rows[index] = TransactionDB(
                         id=id_,
                         account_id=account_id,
@@ -58,7 +68,9 @@ class TransactionRepo:
 
                 return rows
 
-    async def get_monthly_by_account_id(self, account_id: int, day: str, tag: AmountChoices) -> list[TransactionDB]:
+    async def get_monthly_by_account_id(
+        self, account_id: int, day: str, tag: AmountChoices
+    ) -> list[TransactionDB]:
         query = (
             "SELECT id, account_id, category_name, wallet_name, amount, created_at, description "
             "FROM transactions "
@@ -76,7 +88,15 @@ class TransactionRepo:
                 rows = await cursor.fetchall()
 
                 for index, row in enumerate(rows):
-                    id_, account_id, category_name, wallet_name, amount, created_at, description = row
+                    (
+                        id_,
+                        account_id,
+                        category_name,
+                        wallet_name,
+                        amount,
+                        created_at,
+                        description,
+                    ) = row
                     rows[index] = TransactionDB(
                         id=id_,
                         account_id=account_id,

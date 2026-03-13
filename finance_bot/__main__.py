@@ -8,7 +8,12 @@ from finance_bot.config import settings, db_settings
 from finance_bot.routers import router
 from finance_bot.bot import TelegramBot
 from finance_bot.infra.db import DataBaseContext
-from finance_bot.infra.repos import AccountRepo, CategoryRepo, WalletRepo, TransactionRepo
+from finance_bot.infra.repos import (
+    AccountRepo,
+    CategoryRepo,
+    WalletRepo,
+    TransactionRepo,
+)
 from finance_bot.services.changers import (
     AccountServiceChanger,
     CategoryServiceChanger,
