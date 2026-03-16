@@ -18,14 +18,23 @@ class CategoryRepo:
             )
             await connection.commit()
 
+    async def delete(self, item: CategoryDB) -> None:
+        query = (
+            "DELETE FROM category WHERE account_id = ? AND name = ? AND name_detail = ?;"
+        )
+
+        async with self._db_context as connection:
+            await connection.execute(query, (item.account_id, item.name, item.name_detail))
+            await connection.commit()
+
     async def is_exists(self, name: str, account_id: int) -> bool:
         query = (
-            "SELECT name_detail FROM category WHERE name_detail = ? AND account_id = ?;"
+            "SELECT name_detail FROM category WHERE account_id = ? AND name_detail = ?;"
         )
 
         async with self._db_context as connection:
             async with connection.cursor() as cursor:
-                await cursor.execute(query, (name, account_id))
+                await cursor.execute(query, (account_id, name))
                 row = await cursor.fetchone()
                 if row and row[0]:
                     return True

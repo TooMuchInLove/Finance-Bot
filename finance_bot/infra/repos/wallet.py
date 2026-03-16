@@ -19,25 +19,25 @@ class WalletRepo:
             await connection.commit()
 
     async def update(self, item: WalletDB) -> None:
-        query = "UPDATE wallet SET amount = ? WHERE name = ? AND account_id = ?;"
+        query = "UPDATE wallet SET amount = ? WHERE account_id = ? AND name = ?;"
 
         async with self._db_context as connection:
-            await connection.execute(query, (item.amount, item.name, item.account_id))
+            await connection.execute(query, (item.amount, item.account_id, item.name))
             await connection.commit()
 
     async def delete(self, item: WalletDB) -> None:
-        query = "DELETE FROM wallet WHERE name = ? AND account_id = ?;"
+        query = "DELETE FROM wallet WHERE account_id = ? AND name = ?;"
 
         async with self._db_context as connection:
-            await connection.execute(query, (item.name, item.account_id))
+            await connection.execute(query, (item.account_id, item.name))
             await connection.commit()
 
     async def is_exists(self, name: str, account_id: int) -> bool:
-        query = "SELECT name FROM wallet WHERE name = ? AND account_id = ?;"
+        query = "SELECT name FROM wallet WHERE account_id = ? AND name = ?;"
 
         async with self._db_context as connection:
             async with connection.cursor() as cursor:
-                await cursor.execute(query, (name, account_id))
+                await cursor.execute(query, (account_id, name))
                 row = await cursor.fetchone()
                 if row and row[0]:
                     return True
@@ -45,11 +45,11 @@ class WalletRepo:
                 return False
 
     async def get_by_name(self, name: str, account_id: int) -> WalletDB:
-        query = "SELECT name, amount, account_id, created_at FROM wallet WHERE name = ? AND account_id = ?;"
+        query = "SELECT name, amount, account_id, created_at FROM wallet WHERE account_id = ? AND name = ?;"
 
         async with self._db_context as connection:
             async with connection.cursor() as cursor:
-                await cursor.execute(query, (name, account_id))
+                await cursor.execute(query, (account_id, name))
                 row = await cursor.fetchone()
                 name, amount, account_id, created_at = row
 
