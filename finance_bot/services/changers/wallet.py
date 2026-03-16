@@ -3,6 +3,7 @@ from datetime import UTC, datetime
 from loguru import logger
 
 from finance_bot.config import settings
+from finance_bot.entities.exceptions import IntegrityWarning
 from finance_bot.entities.db import WalletDB
 from finance_bot.infra.repos import AccountRepo, WalletRepo
 
@@ -12,24 +13,25 @@ class WalletServiceChanger:
         self._account_repo = account_repo
         self._wallet_repo = wallet_repo
 
-    async def save(self, telegram_user_id: int, parameters: list[str]) -> str:
+    async def save(self, telegram_user_id: int, parameters: list[str]) -> WalletDB:
         account_id: int = await self._account_repo.get_id(
             telegram_user_id=telegram_user_id
         )
 
-        if len(parameters) == 0:
-            logger.warning(
-                f"[#{account_id}] Not enough parameters! Specify the wallet name in the format: "
-                "`/add_wallet название_кошелька_или_карты[:сумма]`"
-            )
-            return (
-                "Недостаточно параметров!\nУкажите название кошелька/карты в формате:\n"
-                "/add_wallet название_кошелька_или_карты[:сумма]"
-            )
-
         name, amount = parameters[0], 0.0
-        if len(parameters) == 2:
-            amount = parameters[1]
+        if len(parameters) >= 2:
+            amount = parameters[1]  # type: ignore[assignment]
+
+        if len(name) <= 5:
+            logger.warning(
+                f"[#{account_id}] The wallet name must be longer than 5 characters long! "
+                "Specify the wallet name in the format: `wallet_name[:amount]`"
+            )
+            message = (
+                "Длина названия кошелька/карты должна быть больше 5 символов!\n"
+                "Укажите название кошелька/карты в формате:\n<code>название_кошелька_или_карты[:сумма]</code>"
+            )
+            raise IntegrityWarning(message=message)
 
         current_datetime: str = (
             datetime.now(tz=UTC)
@@ -46,32 +48,12 @@ class WalletServiceChanger:
         await self._wallet_repo.insert(item=item)
 
         logger.debug(f"[#{account_id}] The wallet `{name}` has been added.")
-        return f"Кошелёк/карта `{name}` была добавлена."
+        return item
 
-    async def delete(self, telegram_user_id: int, parameters: list[str]) -> str:
+    async def delete(self, telegram_user_id: int, name: str) -> WalletDB:
         account_id: int = await self._account_repo.get_id(
             telegram_user_id=telegram_user_id
         )
-
-        if len(parameters) != 1:
-            logger.warning(
-                f"[#{account_id}] Not enough parameters! Specify the wallet name in the format: "
-                "`/delete_wallet название_кошелька_или_карты`"
-            )
-            return (
-                "Недостаточно параметров!\nУкажите название кошелька/карты в формате:\n"
-                "/delete_wallet название_кошелька_или_карты"
-            )
-
-        name = parameters[0]
-
-        is_wallet: bool = await self._wallet_repo.is_exists(
-            name=name, account_id=account_id
-        )
-        if not is_wallet:
-            logger.debug(f"[#{account_id}] The wallet `{name}` does not exist.")
-            return f"Кошелёк/карта `{name}` не существует."
-
         item: WalletDB = WalletDB(
             name=name,
             account_id=account_id,
@@ -79,4 +61,4 @@ class WalletServiceChanger:
         await self._wallet_repo.delete(item=item)
 
         logger.debug(f"[#{account_id}] The wallet `{name}` has been deleted.")
-        return f"Кошелёк/карта `{name}` была удалена."
+        return item

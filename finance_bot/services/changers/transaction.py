@@ -47,7 +47,7 @@ class TransactionServiceChanger:
             category_name, wallet_name, amount = parameters
             description = ""
 
-        amount = float(amount)
+        amount = float(amount)  # type: ignore[assignment]
         current_datetime: str = (
             datetime.now(tz=UTC)
             .replace(microsecond=0)
@@ -78,7 +78,7 @@ class TransactionServiceChanger:
             account_id=account_id,
             category_name=category_name,
             wallet_name=wallet_name,
-            amount=amount,
+            amount=amount,  # type: ignore[arg-type]
             created_at=current_datetime,
             description=description,
         )
@@ -88,7 +88,7 @@ class TransactionServiceChanger:
             item=WalletDB(
                 name=wallet_name,
                 account_id=account_id,
-                amount=wallet.amount + amount,
+                amount=wallet.amount + amount,  # type: ignore[operator]
             ),
         )
 

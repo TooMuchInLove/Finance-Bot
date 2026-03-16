@@ -26,7 +26,7 @@ class AccountRepo:
                 await cursor.execute(query, (telegram_user_id,))
                 row = await cursor.fetchone()
 
-                return row[0]
+                return row[0]  # type: ignore[index]
 
     async def get_by_telegram_user_id(self, telegram_user_id: int) -> AccountDB:
         query = (
@@ -39,7 +39,7 @@ class AccountRepo:
             async with connection.cursor() as cursor:
                 await cursor.execute(query, (telegram_user_id,))
                 row = await cursor.fetchone()
-                id, telegram_user_id, telegram_username, created_at = row
+                id, telegram_user_id, telegram_username, created_at = row  # type: ignore[misc]
 
                 return AccountDB(
                     id=id,

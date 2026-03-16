@@ -6,4 +6,4 @@ class CategoryDB:
     name: str
     name_detail: str
     account_id: int
-    created_at: str
+    created_at: str | None = None

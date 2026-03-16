@@ -3,7 +3,7 @@ from sys import stdout as sys_std_out
 from dataclasses import dataclass
 
 from loguru import logger
-from dynaconf import Dynaconf
+from dynaconf import Dynaconf  # type: ignore[import-untyped]
 
 logger_config_map = {
     "handlers": [
@@ -16,7 +16,7 @@ logger_config_map = {
         },
     ]
 }
-logger.configure(**logger_config_map)
+logger.configure(**logger_config_map)  # type: ignore[arg-type]
 
 settings = Dynaconf(
     envvar_prefix="TFB",

@@ -23,16 +23,16 @@ async def get_index_emoji(index: int) -> str:
 
 def get_telegram_user_id(message: Message | CallbackQuery) -> int:
     if isinstance(message, Message):
-        return message.from_user.id
+        return message.from_user.id  # type: ignore[union-attr]
 
-    return message.message.chat.id
+    return message.message.chat.id  # type: ignore[union-attr]
 
 
-def get_telegram_user_name(message: Message) -> str:
+def get_telegram_user_name(message: Message | CallbackQuery) -> str:
     user = message.from_user
-    first_name = user.first_name
-    last_name = user.last_name
-    is_premium = user.is_premium
+    first_name = user.first_name  # type: ignore[union-attr]
+    last_name = user.last_name  # type: ignore[union-attr]
+    is_premium = user.is_premium  # type: ignore[union-attr]
 
     if first_name and not last_name:
         return f"{_get_premium_status(is_premium)}{first_name}"
@@ -44,8 +44,8 @@ def get_telegram_user_name(message: Message) -> str:
     return f"{_get_premium_status(is_premium)}{first_name} {last_name}"
 
 
-def get_telegram_user_nick(message: Message) -> str:
-    user_nick = message.from_user.username
+def get_telegram_user_nick(message: Message | CallbackQuery) -> str:
+    user_nick = message.from_user.username  # type: ignore[union-attr]
 
     if not user_nick:
         return "<user_name_empty>"
@@ -53,8 +53,8 @@ def get_telegram_user_nick(message: Message) -> str:
     return user_nick
 
 
-def get_telegram_user_link(message: Message) -> str:
-    user_link = message.from_user.username
+def get_telegram_user_link(message: Message | CallbackQuery) -> str:
+    user_link = message.from_user.username  # type: ignore[union-attr]
 
     if not user_link:
         return "#"
@@ -62,10 +62,13 @@ def get_telegram_user_link(message: Message) -> str:
     return f"https://t.me/{user_link}"
 
 
-def get_parameters(message: Message) -> list[str]:
-    string = _join_words_with_spaces(message=message)
-    if not string:
-        return []
+def get_parameters(message: str | Message) -> list[str]:
+    if isinstance(message, Message):
+        string = _join_words_with_spaces(message=message)
+        if not string:
+            return []
+    else:
+        string = message
 
     return string.split(":")
 
@@ -78,10 +81,11 @@ def _join_words_with_spaces(message: Message | list[str]) -> str:
 
 
 def _get_entered_words(message: Message) -> list[str]:
-    return message.text.split()[1:]
+    return message.text.split()  # type: ignore[union-attr]
 
 
-def _get_premium_status(is_premium: bool) -> str:
+def _get_premium_status(is_premium: bool | None) -> str:
     if is_premium:
         return "⭐"
+
     return ""

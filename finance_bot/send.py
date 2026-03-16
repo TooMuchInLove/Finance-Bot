@@ -14,11 +14,11 @@ async def send_telegram_message(
     is_disable_web_page_preview: bool = True,
 ) -> None:
     if isinstance(message, CallbackQuery):
-        message = message.message
+        message = message.message  # type: ignore[assignment]
 
     if buttons is None:
         if is_update_text:
-            msg = await message.edit_text(
+            msg = await message.edit_text(  # type: ignore[union-attr]
                 text=message_text,
                 disable_web_page_preview=is_disable_web_page_preview,
             )
@@ -29,7 +29,7 @@ async def send_telegram_message(
             )
     else:
         if is_update_text:
-            msg = await message.edit_text(
+            msg = await message.edit_text(  # type: ignore[union-attr]
                 text=message_text,
                 reply_markup=buttons,
                 disable_web_page_preview=is_disable_web_page_preview,
@@ -43,4 +43,4 @@ async def send_telegram_message(
 
     if is_delete_message:
         await asyncio_sleep(settings.TELEGRAM_TIMEOUT_DELETE_MESSAGE)
-        await msg.delete()
+        await msg.delete()  # type: ignore[union-attr]
