@@ -52,18 +52,24 @@ def create_account_back_button() -> list[list[InlineKeyboardButton]]:
     ]
 
 
-def create_categories_buttons(names: list[tuple[str, str]]) -> list[list[InlineKeyboardButton]]:
+def create_categories_buttons(
+    names: list[tuple[str, str]],
+) -> list[list[InlineKeyboardButton]]:
     buttons = []
     for item in names:
         buttons.append(
             [
                 InlineKeyboardButton(
                     text=f"{item[0]}, {item[1]}",
-                    callback_data = ShowCategoryCallbackData(slug=ShowCategory.edit).pack(),
+                    callback_data=ShowCategoryCallbackData(
+                        slug=ShowCategory.edit
+                    ).pack(),
                 ),
                 InlineKeyboardButton(
                     text="❌ Удалить",
-                    callback_data=ShowCategoryCallbackData(slug=ShowCategory.delete, name=item[0], name_detail=item[1]).pack(),
+                    callback_data=ShowCategoryCallbackData(
+                        slug=ShowCategory.delete, name=item[0], name_detail=item[1]
+                    ).pack(),
                 ),
             ]
         )
@@ -93,11 +99,15 @@ def create_wallets_buttons(names: list[str]) -> list[list[InlineKeyboardButton]]
             [
                 InlineKeyboardButton(
                     text=name,
-                    callback_data=ShowWalletCallbackData(slug=ShowWallet.get_detail, name=name).pack(),
+                    callback_data=ShowWalletCallbackData(
+                        slug=ShowWallet.get_detail, name=name
+                    ).pack(),
                 ),
                 InlineKeyboardButton(
                     text="❌ Удалить",
-                    callback_data=ShowWalletCallbackData(slug=ShowWallet.delete, name=name).pack(),
+                    callback_data=ShowWalletCallbackData(
+                        slug=ShowWallet.delete, name=name
+                    ).pack(),
                 ),
             ]
         )

@@ -20,7 +20,7 @@ class WalletServiceChanger:
 
         name, amount = parameters[0], 0.0
         if len(parameters) >= 2:
-            amount = parameters[1]
+            amount = parameters[1]  # type: ignore[assignment]
 
         if len(name) <= 5:
             logger.warning(

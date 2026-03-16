@@ -65,7 +65,11 @@ async def command_start(
 
 
 @router.message(StateCategory.add, F.text, flags={"middlewares": ["DIMiddleware"]})
-async def command_add_category(message: Message, state: FSMContext, category_service_changer: CategoryServiceChanger) -> None:
+async def command_add_category(
+    message: Message,
+    state: FSMContext,
+    category_service_changer: CategoryServiceChanger,
+) -> None:
     try:
         telegram_user_id = get_telegram_user_id(message=message)
         parameters = get_parameters(message=message)
@@ -74,17 +78,23 @@ async def command_add_category(message: Message, state: FSMContext, category_ser
             telegram_user_id=telegram_user_id, parameters=parameters
         )
         response = f"Категория `{category.name}:{category.name_detail}` была добавлена успешно."
-        await send_telegram_message(message=message, message_text=response, is_delete_message=True)
+        await send_telegram_message(
+            message=message, message_text=response, is_delete_message=True
+        )
 
         await state.clear()
     except (NotEnoughParametersWarning, IntegrityWarning) as warning:
-        await send_telegram_message(message=message, message_text=str(warning), is_delete_message=True)
+        await send_telegram_message(
+            message=message, message_text=str(warning), is_delete_message=True
+        )
     except Exception as error:
         logger.exception(error)
 
 
 @router.message(StateWallet.add, F.text, flags={"middlewares": ["DIMiddleware"]})
-async def command_add_wallet(message: Message, state: FSMContext, wallet_service_changer: WalletServiceChanger) -> None:
+async def command_add_wallet(
+    message: Message, state: FSMContext, wallet_service_changer: WalletServiceChanger
+) -> None:
     try:
         telegram_user_id = get_telegram_user_id(message=message)
         parameters = get_parameters(message=message)
@@ -93,11 +103,15 @@ async def command_add_wallet(message: Message, state: FSMContext, wallet_service
             telegram_user_id=telegram_user_id, parameters=parameters
         )
         response = f"Кошелёк/карта `{wallet.name}` была добавлена."
-        await send_telegram_message(message=message, message_text=response, is_delete_message=True)
+        await send_telegram_message(
+            message=message, message_text=response, is_delete_message=True
+        )
 
         await state.clear()
     except (NotEnoughParametersWarning, IntegrityWarning) as warning:
-        await send_telegram_message(message=message, message_text=str(warning), is_delete_message=True)
+        await send_telegram_message(
+            message=message, message_text=str(warning), is_delete_message=True
+        )
     except Exception as error:
         logger.exception(error)
 

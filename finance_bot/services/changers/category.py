@@ -55,10 +55,14 @@ class CategoryServiceChanger:
         )
         await self._category_repo.insert(item=item)
 
-        logger.debug(f"[#{account_id}] The category `{name}:{name_detail}` has been added.")
+        logger.debug(
+            f"[#{account_id}] The category `{name}:{name_detail}` has been added."
+        )
         return item
 
-    async def delete(self, telegram_user_id: int, name: str, name_detail: str) -> CategoryDB:
+    async def delete(
+        self, telegram_user_id: int, name: str, name_detail: str
+    ) -> CategoryDB:
         account_id: int = await self._account_repo.get_id(
             telegram_user_id=telegram_user_id
         )

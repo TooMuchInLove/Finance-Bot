@@ -24,7 +24,9 @@ class WalletServiceSelector:
         logger.debug(f"[#{account_id}] The list of wallets has been received.")
         return items
 
-    async def get_by_name_and_telegram_user_id(self, name: str, telegram_user_id: int) -> WalletDB | None:
+    async def get_by_name_and_telegram_user_id(
+        self, name: str, telegram_user_id: int
+    ) -> WalletDB | None:
         account_id: int = await self._account_repo.get_id(
             telegram_user_id=telegram_user_id
         )

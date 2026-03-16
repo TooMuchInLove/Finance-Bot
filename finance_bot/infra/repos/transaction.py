@@ -56,7 +56,7 @@ class TransactionRepo:
                         created_at,
                         description,
                     ) = row
-                    rows[index] = TransactionDB(
+                    rows[index] = TransactionDB(  # type: ignore[index]
                         id=id_,
                         account_id=account_id,
                         category_name=category_name,
@@ -66,7 +66,7 @@ class TransactionRepo:
                         description=description,
                     )
 
-                return rows
+                return rows  # type: ignore[return-value]
 
     async def get_monthly_by_account_id(
         self, account_id: int, day: str, tag: AmountChoices
@@ -97,7 +97,7 @@ class TransactionRepo:
                         created_at,
                         description,
                     ) = row
-                    rows[index] = TransactionDB(
+                    rows[index] = TransactionDB(  # type: ignore[index]
                         id=id_,
                         account_id=account_id,
                         category_name=category_name,
@@ -107,4 +107,4 @@ class TransactionRepo:
                         description=description,
                     )
 
-                return rows
+                return rows  # type: ignore[return-value]

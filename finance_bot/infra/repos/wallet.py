@@ -51,7 +51,7 @@ class WalletRepo:
             async with connection.cursor() as cursor:
                 await cursor.execute(query, (account_id, name))
                 row = await cursor.fetchone()
-                name, amount, account_id, created_at = row
+                name, amount, account_id, created_at = row  # type: ignore[misc]
 
                 return WalletDB(
                     name=name,
@@ -70,11 +70,11 @@ class WalletRepo:
 
                 for index, row in enumerate(rows):
                     name, amount, account_id, created_at = row
-                    rows[index] = WalletDB(
+                    rows[index] = WalletDB(  # type: ignore[index]
                         name=name,
                         amount=amount,
                         account_id=account_id,
                         created_at=created_at,
                     )
 
-                return rows
+                return rows  # type: ignore[return-value]

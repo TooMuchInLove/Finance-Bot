@@ -19,12 +19,12 @@ class CategoryRepo:
             await connection.commit()
 
     async def delete(self, item: CategoryDB) -> None:
-        query = (
-            "DELETE FROM category WHERE account_id = ? AND name = ? AND name_detail = ?;"
-        )
+        query = "DELETE FROM category WHERE account_id = ? AND name = ? AND name_detail = ?;"
 
         async with self._db_context as connection:
-            await connection.execute(query, (item.account_id, item.name, item.name_detail))
+            await connection.execute(
+                query, (item.account_id, item.name, item.name_detail)
+            )
             await connection.commit()
 
     async def is_exists(self, name: str, account_id: int) -> bool:
@@ -51,11 +51,11 @@ class CategoryRepo:
 
                 for index, row in enumerate(rows):
                     name, name_detail, account_id, created_at = row
-                    rows[index] = CategoryDB(
+                    rows[index] = CategoryDB(  # type: ignore[index]
                         name=name,
                         name_detail=name_detail,
                         account_id=account_id,
                         created_at=created_at,
                     )
 
-                return rows
+                return rows  # type: ignore[return-value]
