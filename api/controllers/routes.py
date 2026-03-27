@@ -1,11 +1,13 @@
 from litestar import Router
 
 from api.controllers.account import AccountController
+from api.controllers.category import CategoryController
 from api.controllers.healthcheck import healthcheck
 
 routes_version_v1 = [
     healthcheck,
     AccountController,
+    CategoryController,
 ]
 
 api = "api"
