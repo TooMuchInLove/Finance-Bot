@@ -16,6 +16,8 @@ class AccountServiceChanger(IAccountServiceChanger):
 
     @catch_api_errors
     async def create(self, telegram_user_id: int, telegram_username: str) -> AccountResponse:
+        """Создать пользователя"""
+
         current_datetime = datetime.now(tz=UTC).replace(microsecond=0, tzinfo=UTC)
 
         item = await self._account_repo.insert(

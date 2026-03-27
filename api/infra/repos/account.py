@@ -16,6 +16,8 @@ class AccountRepo(IAccountRepo):
         self._logger = logger
 
     async def insert(self, item: AccountDB) -> AccountDB:
+        """Добавить пользователя"""
+
         try:
             async with self._db_context.get_session() as session:
                 data = insert(AccountModel).values(**item.model_dump()).returning(AccountModel)
@@ -26,15 +28,20 @@ class AccountRepo(IAccountRepo):
                 return AccountDB.model_validate(account, from_attributes=True)
         except IntegrityError as err:
             message = f"[{item.telegram_user_id}] The user already exists"
+            self._logger.error(message)
             raise ConflictError(message=message) from err
 
     async def select_by_telegram_user_id(self, telegram_user_id: int) -> AccountDB:
+        """Получить данные конкретного пользователя"""
+
         async with self._db_context.get_session() as session:
             data = select(AccountModel).where(AccountModel.telegram_user_id == telegram_user_id)
             result = await session.execute(data)
             account = result.scalar_one_or_none()
 
             if not account:
-                raise NotFoundError(f"[{telegram_user_id}] Account with not found")
+                message = f"[{telegram_user_id}] Account with not found"
+                self._logger.error(message)
+                raise NotFoundError(message)
 
             return AccountDB.model_validate(account, from_attributes=True)

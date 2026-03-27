@@ -13,6 +13,8 @@ class AccountServiceSelector(IAccountServiceSelector):
 
     @catch_api_errors
     async def get_by_telegram_user_id(self, telegram_user_id: int) -> AccountResponse:
+        """Получить данные конкретного пользователя"""
+
         item = await self._account_repo.select_by_telegram_user_id(
             telegram_user_id=telegram_user_id
         )
